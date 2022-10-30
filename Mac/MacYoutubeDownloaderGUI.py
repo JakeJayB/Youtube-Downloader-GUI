@@ -1,5 +1,4 @@
 import time
-import os
 from pytube import YouTube
 from youtubesearchpython import VideosSearch
 
@@ -108,7 +107,6 @@ def download(modifiedStream):
     checkOutputBoxHeight(5)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Title: " + vidObject.get_title() + "\n")
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Uploaded: " + vidObject.get_date() + " Views: " + str(vidObject.get_views()) + "\n")
-    # outputBox.config(anchor=N, text= outputBox.cget("text") + "Thumbnail URL:: " + vidObject.get_thumbnail() + "\n")
 
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Downloading..." + "\n")
     
@@ -185,10 +183,10 @@ def youtubeSearchPython(videoTitle):
     checkOutputBoxHeight(1)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
     
-    userVideo = StringVar()
     videoSearch = VideosSearch(videoTitle, limit = 5)
 
     while True:
+        userVideo = StringVar()
         checkOutputBoxHeight(7)
         outputBox.config(anchor=N, text= outputBox.cget("text") + "Video Options:\n")
         for i in range(5):
@@ -199,7 +197,7 @@ def youtubeSearchPython(videoTitle):
         root.wait_variable(userVideo)
         try:
             userVideo = int(userVideo.get()) -1
-            if userVideo < 0 and userVideo > 5:
+            if userVideo < 0 or userVideo > 5:
                 checkOutputBoxHeight(1)
                 outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Enter a number in the valid range..." + "\n")
                 isVideoSelected = False 
@@ -310,7 +308,7 @@ def main():
     inputBox.config(state=DISABLED)
     submitInputButton.config(state=DISABLED)
     if(isPathSet == False):
-        ModifyPath() #"C:\Users\modre\Videos\Captures"
+        ModifyPath() 
 
     try:
         YouTube(Video)
@@ -345,12 +343,10 @@ def main():
 #
 #
 from tkinter import *
-from PIL import Image, ImageTk
 
 #Header GUI
 root = Tk()
 root.title("Youtube Downloader GUI")
-#root.iconbitmap("Photos\YoutubeIcon.ico")
 root.geometry("1060x780")
 
 
