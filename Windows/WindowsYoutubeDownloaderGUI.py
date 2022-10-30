@@ -36,8 +36,9 @@ class Video:
         return self.videoTitle
 
     def get_date(self):
+        if self.videoDate == None:
+            return "N/A"
         return self.videoDate
-
     def get_views(self):
         return self.videoViews
 
@@ -121,15 +122,27 @@ def ModifyPath():
 def download(modifiedStream):
     global vidObject
 
-    checkOutputBoxHeight(5)
-    outputBox.config(anchor=N, text= outputBox.cget("text") + "Title: " + vidObject.get_title() + "\n")
-    outputBox.config(anchor=N, text= outputBox.cget("text") + "Uploaded: " + vidObject.get_date() + " Views: " + str(vidObject.get_views()) + "\n")
-    # outputBox.config(anchor=N, text= outputBox.cget("text") + "Thumbnail URL:: " + vidObject.get_thumbnail() + "\n")
-
+    try:
+        modifiedStream.download(output_path=userPath)
+    except:
+        checkOutputBoxHeight(2)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Video failed to download. Please try again or download a different video." + "\n")
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
+        del vidObject
+        return
+    
+    count = 2
+    try:
+        checkOutputBoxHeight(5)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Title: " + vidObject.get_title() + "\n")
+        count -= 1
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Uploaded: " + vidObject.get_date() + " Views: " + str(vidObject.get_views()) + "\n")   
+    except:
+        checkOutputBoxHeight(-count)
+        pass
+    
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Downloading..." + "\n")
     
-
-    modifiedStream.download(output_path=userPath)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Download Completed!" + "\n")
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
     del vidObject
@@ -221,7 +234,7 @@ def youtubeSearchPython(videoTitle):
 
     while True:
         userVideo = StringVar()
-        checkOutputBoxHeight(7)
+        checkOutputBoxHeight(8)
         outputBox.config(anchor=N, text= outputBox.cget("text") + "Video Options:\n")
         for i in range(5):
             outputBox.config(anchor=N, text= outputBox.cget("text") + str(i+1) + ": " + videoSearch.result()["result"][i]["title"] + "\n")

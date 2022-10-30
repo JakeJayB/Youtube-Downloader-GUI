@@ -14,7 +14,7 @@
 #          Note: dependencies must be installed for this program to work
 #
 ###############################################################################################################################
-
+import time
 from pytube import YouTube
 from youtubesearchpython import VideosSearch
 
@@ -35,6 +35,8 @@ class Video:
         return self.videoTitle
 
     def get_date(self):
+        if self.videoDate == None:
+            return "N/A"
         return self.videoDate
 
     def get_views(self):
@@ -100,7 +102,7 @@ def checkOutputBoxHeight(addon):
     currentLinesUsed = currentLinesUsed + addon
     if currentLinesUsed > maxVerticalLength:
         outputBox.config(anchor=N, text= "")
-        currentLinesUsed = addon
+        currentLinesUsed -= maxVerticalLength
 
 
 def ModifyPath():
@@ -119,17 +121,31 @@ def ModifyPath():
 
 def download(modifiedStream):
     global vidObject
+    
+    try:
+        if vidObject.get_isAudio() == True:
+            modifiedStream.download(output_path=userPath, filename_prefix="(Audio)")
+        else:
+            modifiedStream.download(output_path=userPath)
+    except:
+        checkOutputBoxHeight(2)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Video failed to download. Please try again or download a different video." + "\n")
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
+        del vidObject
+        return
 
-    checkOutputBoxHeight(5)
-    outputBox.config(anchor=N, text= outputBox.cget("text") + "Title: " + vidObject.get_title() + "\n")
-    outputBox.config(anchor=N, text= outputBox.cget("text") + "Uploaded: " + vidObject.get_date() + " Views: " + str(vidObject.get_views()) + "\n")
-
+    count = 2
+    try:
+        checkOutputBoxHeight(5)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Title: " + vidObject.get_title() + "\n")
+        count -= 1
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "Uploaded: " + vidObject.get_date() + " Views: " + str(vidObject.get_views()) + "\n")   
+    except:
+        checkOutputBoxHeight(-count)
+        pass
+    
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Downloading..." + "\n")
     
-    if vidObject.get_isAudio() == True:
-        modifiedStream.download(output_path=userPath, filename_prefix="(Audio)")
-    else:
-        modifiedStream.download(output_path=userPath)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Download Completed!" + "\n")
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
     del vidObject
@@ -201,7 +217,7 @@ def youtubeSearchPython(videoTitle):
 
     while True:
         userVideo = StringVar()
-        checkOutputBoxHeight(7)
+        checkOutputBoxHeight(8)
         outputBox.config(anchor=N, text= outputBox.cget("text") + "Video Options:\n")
         for i in range(5):
             outputBox.config(anchor=N, text= outputBox.cget("text") + str(i+1) + ": " + videoSearch.result()["result"][i]["title"] + "\n")
@@ -302,7 +318,6 @@ def pytube(video):
                 download(modifiedStream)
                 return
             case 1:
-                #modifiedStream = video.streams.filter(only_audio = True, file_extension="webm").get_by_itag(251)
                 modifiedStream = video.streams.filter(only_audio = True, file_extension='webm').get_by_itag(251)
                 vidObject = Video(None, video.title, get_written_date(str(video.publish_date)[:10].split('-')), video.views, video.thumbnail_url, True)
                 download(modifiedStream)
