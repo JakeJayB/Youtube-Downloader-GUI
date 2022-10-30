@@ -159,7 +159,6 @@ def WhichCoding():
             root.wait_variable(userAction)
             userAction = int(userAction.get()) 
             if userAction < 1 or userAction > 3:
-                # print("ERROR: Enter a number in the valid range... \n")
                 checkOutputBoxHeight(1)
                 outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Enter a number in the valid range..." + "\n")
                 downloadOptionSelected = False  
@@ -169,7 +168,6 @@ def WhichCoding():
             checkOutputBoxHeight(1)
             outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Numeral Characters Only..." + "\n")
             downloadOptionSelected = False  
-            # print("ERROR: Numeral Characters Only...\n")
             continue
     checkOutputBoxHeight(1)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
@@ -202,10 +200,10 @@ def youtubeSearchPython(videoTitle):
     checkOutputBoxHeight(1)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
     
-    userVideo = StringVar()
     videoSearch = VideosSearch(videoTitle, limit = 5)
 
     while True:
+        userVideo = StringVar()
         checkOutputBoxHeight(7)
         outputBox.config(anchor=N, text= outputBox.cget("text") + "Video Options:\n")
         for i in range(5):
@@ -216,7 +214,7 @@ def youtubeSearchPython(videoTitle):
         root.wait_variable(userVideo)
         try:
             userVideo = int(userVideo.get()) -1
-            if userVideo < 0 and userVideo > 5:
+            if userVideo < 0 or userVideo > 5:
                 checkOutputBoxHeight(1)
                 outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Enter a number in the valid range..." + "\n")
                 isVideoSelected = False 
