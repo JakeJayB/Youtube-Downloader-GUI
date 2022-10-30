@@ -1,3 +1,20 @@
+#
+#
+#             This GUI was made my Jacob Joseph Bejarano
+#                  Contact: JacobJBejarano@gmail.com
+#                         GitHub: JakeJayB
+#          
+#      LinkedIn: https://www.linkedin.com/in/jacob-j-bejarano-74347b230/
+#          GitHub: https://github.com/JakeJayB?tab=repositories
+#       
+#
+#                     Updated as of: October 30, 2022 
+#
+#           Dependencies: pytube, youtubesearchpython, moviepy.editor
+#          Note: dependencies must be installed for this program to work
+#
+###############################################################################################################################
+
 import os
 from pytube import YouTube
 from youtubesearchpython import VideosSearch

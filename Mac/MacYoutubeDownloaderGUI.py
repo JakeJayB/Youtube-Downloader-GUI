@@ -1,4 +1,20 @@
-import time
+#
+#
+#             This GUI was made my Jacob Joseph Bejarano
+#                  Contact: JacobJBejarano@gmail.com
+#                         GitHub: JakeJayB
+#          
+#      LinkedIn: https://www.linkedin.com/in/jacob-j-bejarano-74347b230/
+#          GitHub: https://github.com/JakeJayB?tab=repositories
+#       
+#
+#                     Updated as of: October 30, 2022 
+#
+#                 Dependencies: pytube, youtubesearchpython
+#          Note: dependencies must be installed for this program to work
+#
+###############################################################################################################################
+
 from pytube import YouTube
 from youtubesearchpython import VideosSearch
 
@@ -138,7 +154,6 @@ def WhichCoding():
             root.wait_variable(userAction)
             userAction = int(userAction.get()) 
             if userAction < 1 or userAction > 3:
-                # print("ERROR: Enter a number in the valid range... \n")
                 checkOutputBoxHeight(1)
                 outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Enter a number in the valid range..." + "\n")
                 downloadOptionSelected = False  
@@ -148,7 +163,6 @@ def WhichCoding():
             checkOutputBoxHeight(1)
             outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Numeral Characters Only..." + "\n")
             downloadOptionSelected = False  
-            # print("ERROR: Numeral Characters Only...\n")
             continue
     checkOutputBoxHeight(1)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
