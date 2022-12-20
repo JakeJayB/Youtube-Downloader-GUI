@@ -108,6 +108,7 @@ def checkOutputBoxHeight(addon):
 def ModifyPath():
     global userPath
     global outputBox
+    global isPathSet
 
     checkOutputBoxHeight(1)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Where would you like to store your videos? (Copy and Paste a path)\n")
@@ -115,8 +116,23 @@ def ModifyPath():
     userPath = StringVar()
     root.wait_variable(userPath)
 
-    userPath = userPath.get().replace("\\", "/")
+    userPath = userPath.get().strip()
+    userPath = userPath.replace("\\", "/")
     userPath = userPath.replace('"', '')
+
+    if userPath == "":
+        isPathSet = False
+        checkOutputBoxHeight(1)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "The given path is empty. Please enter a proper path\n")
+        ModifyPath()
+        return
+    elif os.path.exists(userPath) == False:
+        isPathSet = False
+        checkOutputBoxHeight(1)
+        outputBox.config(anchor=N, text= outputBox.cget("text") + "The given path doesn't exist. Please enter a proper path\n")
+        ModifyPath()
+        return
+        
 
 
 def download(modifiedStream):
@@ -189,14 +205,16 @@ def WhichCoding():
             root.wait_variable(userAction)
             userAction = int(userAction.get()) 
             if userAction < 1 or userAction > 3:
-                checkOutputBoxHeight(1)
+                checkOutputBoxHeight(2)
+                outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
                 outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Enter a number in the valid range..." + "\n")
                 downloadOptionSelected = False  
                 continue
             break
         except:
-            checkOutputBoxHeight(1)
-            outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Numeral Characters Only..." + "\n")
+            checkOutputBoxHeight(2)
+            outputBox.config(anchor=N, text= outputBox.cget("text") + "-" * maxHorizontalLength + "\n")
+            outputBox.config(anchor=N, text= outputBox.cget("text") + "ERROR: Numerical Characters Only..." + "\n")
             downloadOptionSelected = False  
             continue
     checkOutputBoxHeight(1)
@@ -361,8 +379,8 @@ def main():
         print("Pytube")
         pytube(userVideo)
     except:    
-        youtubeSearchPython(userVideo)
         print("YoutubeSearch")
+        youtubeSearchPython(userVideo)
             
     checkOutputBoxHeight(2)
     outputBox.config(anchor=N, text= outputBox.cget("text") + "Thank you for using this program! You're now able to download more videos!\nReset the program if you want to change the destination path\n")

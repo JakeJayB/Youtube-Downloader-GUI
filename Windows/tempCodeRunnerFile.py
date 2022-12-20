@@ -1,1 +1,0 @@
-"C:\Users\modre\Videos\Captures"
